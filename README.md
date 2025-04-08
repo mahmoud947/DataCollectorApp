@@ -133,3 +133,9 @@ Mahmoud Kamal El-Din
 ## Repository
 
 [https://github.com/mahmoud947/DataCollectorApp](https://github.com/mahmoud947/DataCollectorApp)
+
+## Screens
+
+![WhatsApp Image 2025-04-08 at 21 33 06](https://github.com/user-attachments/assets/8bb82820-e5d2-43fe-9ccd-4740c8a45be9)
+
+![WhatsApp Image 2025-04-08 at 21 33 06 (1)](https://github.com/user-attachments/assets/1df205b2-9bc1-451c-ab43-225aa3539e25)
