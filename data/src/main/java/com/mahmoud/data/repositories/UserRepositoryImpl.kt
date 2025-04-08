@@ -2,7 +2,6 @@ package com.mahmoud.data.repositories
 
 import com.mahmoud.core.mapper.mapAll
 import com.mahmoud.data.datasource.local.dao.UserDao
-import com.mahmoud.data.datasource.local.entity.UserEntity
 import com.mahmoud.data.mapper.UserMapper
 import com.mahmoud.domain.models.User
 import com.mahmoud.domain.repositories.UserRepository

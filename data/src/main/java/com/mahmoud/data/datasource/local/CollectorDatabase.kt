@@ -8,7 +8,7 @@ import com.mahmoud.data.datasource.local.dao.UserDao
 
 
 abstract class CollectorDatabase : RoomDatabase() {
-    abstract val categoryDao: UserDao
+    abstract val userDao: UserDao
 
     companion object {
         private lateinit var INSTANCE: CollectorDatabase
