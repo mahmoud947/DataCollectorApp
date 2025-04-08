@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
-    id("androidx.room")
 }
 
 android {
@@ -17,8 +17,8 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
-    room {
-        schemaDirectory("$projectDir/schemas")
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
     }
 
     buildTypes {
@@ -52,7 +52,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.compiler.v2405)
+    ksp(libs.hilt.compiler)
 
     // Room
     implementation(libs.androidx.room.runtime)

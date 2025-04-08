@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -45,11 +47,13 @@ fun CTextField(
     trailingIcon: ImageVector? = null,
     leadingIcon: ImageVector? = null,
     placeholder: String = "",
+    keyboardType: KeyboardType = KeyboardType.Text
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     Column {
         OutlinedTextField(
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             modifier = modifier.height(56.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = focusedBorderColor,
@@ -106,11 +110,11 @@ fun CTextField(
                 }
             } else null,
             shape = RoundedCornerShape(8.dp),
-            )
+        )
         if (isError) {
             CText(
                 modifier = Modifier.padding(top = 4.dp),
-                text = errorMessage?:"",
+                text = errorMessage ?: "",
                 color = MaterialTheme.colorScheme.error,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Normal,

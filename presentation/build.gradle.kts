@@ -61,7 +61,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.compiler.v2405)
+    ksp(libs.hilt.compiler)
 
     implementation(project(":systemDesign"))
     implementation(project(":domain"))
