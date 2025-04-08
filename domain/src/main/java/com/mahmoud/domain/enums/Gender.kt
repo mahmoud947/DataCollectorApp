@@ -1,4 +1,4 @@
-package com.mahmoud.data.datasource.enums
+package com.mahmoud.domain.enums
 
 enum class Gender {
     MALE,

@@ -2,8 +2,7 @@ package com.mahmoud.data.datasource.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.mahmoud.data.datasource.enums.Gender
-
+import com.mahmoud.domain.enums.Gender
 
 
 @Entity(tableName = "users")
