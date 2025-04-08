@@ -72,6 +72,13 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":core"))
 
+    // Mockito dependencies
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.inline)
+    testImplementation(kotlin("test"))
 
 
     implementation(libs.kotlinx.serialization.json)

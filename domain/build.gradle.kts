@@ -51,4 +51,13 @@ dependencies {
     ksp(libs.hilt.compiler)
 
 
+    // Mockito dependencies
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.inline)
+    testImplementation(kotlin("test"))
+
+
 }
