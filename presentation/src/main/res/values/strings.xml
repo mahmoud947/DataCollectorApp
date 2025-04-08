@@ -5,4 +5,5 @@
     <string name="age">Age</string>
     <string name="job_title">Job Title</string>
     <string name="save_user">Save User</string>
+    <string name="user_saved_successfully">User saved successfully!</string>
 </resources>

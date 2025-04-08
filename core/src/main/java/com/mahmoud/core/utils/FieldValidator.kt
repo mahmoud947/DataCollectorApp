@@ -7,6 +7,7 @@ interface FieldValidator {
     fun isMinLength(text: String, minLength: Int): Boolean
     fun isMaxLength(text: String, maxLength: Int): Boolean
     fun matchesPattern(text: String, regex: String): Boolean
+    fun isDigitsOnly(text: String): Boolean
 }
 
 class DefaultFieldValidator : FieldValidator {
@@ -35,5 +36,9 @@ class DefaultFieldValidator : FieldValidator {
 
     override fun matchesPattern(text: String, regex: String): Boolean {
         return text.matches(regex.toRegex())
+    }
+
+    override fun isDigitsOnly(text: String): Boolean {
+        return text.all { it.isDigit() }
     }
 }

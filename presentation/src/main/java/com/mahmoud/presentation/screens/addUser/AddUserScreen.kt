@@ -12,7 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mahmoud.core.base.UiSideEffect
 import com.mahmoud.domain.enums.Gender
 import com.mahmoud.presentation.R
 import com.mahmoud.systemdesign.componants.buttons.CButton
@@ -38,11 +38,16 @@ import com.mahmoud.systemdesign.componants.dropdown.CDropdownList
 import com.mahmoud.systemdesign.componants.dropdown.DropdownItem
 import com.mahmoud.systemdesign.componants.textField.CTextField
 import com.mahmoud.systemdesign.utils.Margin
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun AddUserScreen(
+    modifier: Modifier = Modifier,
     onNavigateToDisplayScreen: () -> Unit,
-
+    state: AddUserContract.State = AddUserContract.State(),
+    onEvent: (AddUserContract.Event) -> Unit = {},
+    effect: Flow<UiSideEffect> = emptyFlow()
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -89,21 +94,27 @@ fun AddUserScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     CTextField(
-                        value = "",
-                        onValueChange = {  },
+                        errorMessage = state.nameError,
+                        isError = state.nameError != null,
+                        value = state.name,
+                        onValueChange = { onEvent(AddUserContract.Event.OnNameChanged(it)) },
                         placeholder = stringResource(R.string.full_name)
                     )
 
                     CTextField(
-                        value = "12",
-                        onValueChange = { },
+                        errorMessage = state.ageError,
+                        isError = state.ageError != null,
+                        value = state.age,
+                        onValueChange = { onEvent(AddUserContract.Event.OnAgeChanged(it)) },
                         placeholder = stringResource(R.string.age),
                         keyboardType = KeyboardType.Number
                     )
 
                     CTextField(
-                        value = "",
-                        onValueChange = {  },
+                        errorMessage = state.jobTitleError,
+                        isError = state.jobTitleError != null,
+                        value = state.jobTitle,
+                        onValueChange = { onEvent(AddUserContract.Event.OnJobTitleChanged(it)) },
                         placeholder = stringResource(R.string.job_title)
                     )
 
@@ -111,21 +122,28 @@ fun AddUserScreen(
                     CDropdownList(
                         items = listOf(GenderItem(label = "Male"), GenderItem(label = "Female")),
                         selectedItem = GenderItem(label = "Male"),
-                        onItemSelected = {}
+                        onItemSelected = {
+                            val gender = when (it.label) {
+                                "Male" -> Gender.MALE
+                                "Female" -> Gender.FEMALE
+                                else -> Gender.MALE
+                            }
+                            onEvent(AddUserContract.Event.OnGenderChanged(gender))
+                        }
                     )
 
                     Margin(8.dp)
 
                     CButton(
                         text = stringResource(R.string.save_user),
-                        onClick = { },
-                        enabled = true,
-                        isLoading = false
+                        onClick = { onEvent(AddUserContract.Event.OnAddNewUser) },
+                        enabled = !state.isLoading,
+                        isLoading = state.isLoading
                     )
                 }
             }
 
-            AnimatedVisibility (
+            AnimatedVisibility(
                 visible = false,
                 enter = fadeIn(),
                 exit = fadeOut()
@@ -137,7 +155,7 @@ fun AddUserScreen(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
                 ) {
                     Text(
-                        text = "User saved successfully!",
+                        text = stringResource(R.string.user_saved_successfully),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(16.dp),
                         color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -150,11 +168,13 @@ fun AddUserScreen(
 
 data class GenderItem(
     override val label: String
-): DropdownItem
+) : DropdownItem
 
 
 @Preview
 @Composable
 private fun AddUserScreePrev() {
-    AddUserScreen {  }
+    AddUserScreen(
+        onNavigateToDisplayScreen = {}
+    )
 }

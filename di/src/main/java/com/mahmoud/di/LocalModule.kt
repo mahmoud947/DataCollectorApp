@@ -3,6 +3,7 @@ package com.mahmoud.di
 
 import android.content.Context
 import com.mahmoud.data.datasource.local.CollectorDatabase
+import com.mahmoud.data.datasource.local.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,5 +18,5 @@ object LocalModule {
         CollectorDatabase.getInstance(context)
 
     @Provides
-    fun provideUserDao(database: CollectorDatabase) = database.userDao
+    fun provideUserDao(database: CollectorDatabase): UserDao = database.userDao
 }
