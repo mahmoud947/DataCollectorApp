@@ -9,8 +9,12 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,7 +24,7 @@ abstract class BaseViewModel<Event : UiEvent, State> : ViewModel() {
     private val initialState: UiState<State> by lazy { UiState(setInitialState()) }
     abstract fun setInitialState(): State
 
-    private val _state: MutableStateFlow<UiState<State>> = MutableStateFlow(initialState)
+    protected val _state: MutableStateFlow<UiState<State>> = MutableStateFlow(initialState)
     val state: MutableStateFlow<UiState<State>> = _state
 
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
@@ -63,15 +67,27 @@ abstract class BaseViewModel<Event : UiEvent, State> : ViewModel() {
         )
     }
 
-//    fun <T> execute(dispatcher: CoroutineDispatcher = Dispatchers.IO, execute: () -> T) {
-//        launchCoroutine(dispatcher) {
-//            _state.update { it.copy(isLoading = true) }
-//            execute()
-//            _state.update { it.copy(isLoading = false) }
-//        }
-//    }
+    fun <T> executeFlow(dispatcher: CoroutineDispatcher = Dispatchers.IO, execute: () -> Flow<T>, onResult: (T) -> Unit) {
+        launchCoroutine(dispatcher) {
+            execute()
+                .onStart {
+                    _state.update { it.copy(isLoading = true) }
+                }
+                .onCompletion {
+                    _state.update { it.copy(isLoading = false) }
+                }
+                .collectLatest {
+                    onResult(it)
+                    _state.update { it.copy(isLoading = false) }
+                }
+        }
+    }
 
-    fun <T> execute(dispatcher: CoroutineDispatcher = Dispatchers.IO, execute: suspend () -> T, onResult: (T) -> Unit) {
+    fun <T> execute(
+        dispatcher: CoroutineDispatcher = Dispatchers.IO,
+        execute: suspend () -> T,
+        onResult: (T) -> Unit
+    ) {
         launchCoroutine(dispatcher) {
             _state.update { it.copy(isLoading = true) }
             val result = execute()

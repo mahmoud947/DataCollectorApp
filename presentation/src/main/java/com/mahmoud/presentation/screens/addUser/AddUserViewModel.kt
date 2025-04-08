@@ -41,7 +41,12 @@ class AddUserViewModel @Inject constructor(
                     )
                 )
             }
-        ) {}
+        ) { id ->
+            setEffect {
+                AddUserContract.Effect.ShowSuccessMessage("User saved successfully")
+            }
+            clearForm()
+        }
     }
 
     private inline fun validateForm(onValid: () -> Unit) {
@@ -108,6 +113,17 @@ class AddUserViewModel @Inject constructor(
     private fun onJobTitleChanged(jobTitle: String) {
         setState {
             copy(jobTitle = jobTitle)
+        }
+    }
+
+    private fun clearForm() {
+        setState {
+            copy(
+                name = "",
+                age = "",
+                jobTitle = "",
+                gender = Gender.MALE
+            )
         }
     }
 

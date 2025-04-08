@@ -14,9 +14,9 @@ class UserRepositoryImpl @Inject constructor(
     private val userMapper: UserMapper,
 ) : UserRepository {
 
-    override suspend fun saveUser(user: User) {
+    override suspend fun saveUser(user: User): Long {
         val userEntity = userMapper.userToEntityMapper.map(user)
-        userDao.insertUser(userEntity)
+       return userDao.insertUser(userEntity)
     }
 
     override fun getAllUsers(): Flow<List<User>> {

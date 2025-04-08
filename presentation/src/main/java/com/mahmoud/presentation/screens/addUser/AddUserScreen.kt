@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -23,8 +24,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,8 +41,11 @@ import com.mahmoud.systemdesign.componants.dropdown.CDropdownList
 import com.mahmoud.systemdesign.componants.dropdown.DropdownItem
 import com.mahmoud.systemdesign.componants.textField.CTextField
 import com.mahmoud.systemdesign.utils.Margin
+import com.mahmoud.systemdesign.utils.OnEffect
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun AddUserScreen(
@@ -52,8 +58,24 @@ fun AddUserScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scrollState = rememberScrollState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
+    val scop = rememberCoroutineScope()
+    effect.OnEffect { action ->
+        when (action) {
+            is AddUserContract.Effect.ShowSuccessMessage -> {
+                keyboardController?.hide()
+                scop.launch {
+                    snackbarHostState.showSnackbar(
+                        message = action.message,
+                        withDismissAction = true
+                    )
+                }
+            }
+        }
+    }
     Scaffold(
+        modifier = modifier.imePadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
             FloatingActionButton(

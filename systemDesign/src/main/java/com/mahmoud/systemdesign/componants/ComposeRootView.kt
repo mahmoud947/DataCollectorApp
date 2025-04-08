@@ -8,12 +8,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mahmoud.core.base.BaseViewModel
+import com.mahmoud.systemdesign.componants.loading.DefaultLoadingView
 
 
 @Composable
 inline fun <State, Event, reified Vm : BaseViewModel<Event, State>> ComposeRootView(
     withDefaultLoading: Boolean = true,
-    loadingView: @Composable () -> Unit = {},
+    loadingView: @Composable () -> Unit = {
+        if (withDefaultLoading)
+            DefaultLoadingView()
+    },
     errorView: @Composable () -> Unit = {},
     content: @Composable (state: State, viewModel: Vm, isLoading: Boolean) -> Unit
 ) {
