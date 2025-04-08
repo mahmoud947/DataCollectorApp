@@ -4,8 +4,13 @@ import com.mahmoud.core.mapper.Mapper
 import com.mahmoud.data.datasource.local.entity.UserEntity
 import com.mahmoud.domain.models.User
 
+data class UserMapper(
+    val userEntityToDomainMapper: UserEntityToDomainMapper,
+    val userToEntityMapper: UserToEntityMapper
+)
 
-object UserEntityToDomainMapper : Mapper<UserEntity, User> {
+
+class UserEntityToDomainMapper : Mapper<UserEntity, User> {
     override fun map(from: UserEntity): User =
         User(
             id = from.id,
@@ -16,7 +21,7 @@ object UserEntityToDomainMapper : Mapper<UserEntity, User> {
         )
 }
 
-object UserToEntityMapper : Mapper<User, UserEntity>{
+class UserToEntityMapper : Mapper<User, UserEntity>{
     override fun map(from: User): UserEntity {
         return UserEntity(
             id = from.id,
