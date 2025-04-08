@@ -1,4 +1,4 @@
-package com.mahmoud.datacollectorapp.ui.theme
+package com.mahmoud.systemdesign.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
